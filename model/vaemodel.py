@@ -84,10 +84,10 @@ class Model(nn.Module):
         self.optimizer  = optim.Adam( parameters_to_optimize ,lr=hyperparameters['lr_gen_model'], betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=True)
 
         if self.reco_loss_function=='l2':
-            self.reconstruction_criterion = nn.MSELoss(size_average=False)
+            self.reconstruction_criterion = nn.MSELoss(reduction='sum')
 
         elif self.reco_loss_function=='l1':
-            self.reconstruction_criterion = nn.L1Loss(size_average=False)
+            self.reconstruction_criterion = nn.L1Loss(reduction='sum')
 
     def reparameterize(self, mu, logvar):
         if self.reparameterize_with_noise:
