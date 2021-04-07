@@ -293,4 +293,7 @@ class DATA_LOADER(object):
         if use_hie:
             self.data['train_seen_unseen_mixed']['wordnet'] = torch.cat((self.data['train_seen']['wordnet'],self.data['train_unseen']['wordnet']),dim=0)
 
+
+    def __len__(self):
+        return self.data['train_seen']['resnet_features'].size(0)
 #d = DATA_LOADER()
