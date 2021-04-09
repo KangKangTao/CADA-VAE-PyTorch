@@ -189,7 +189,7 @@ class Model(nn.Module):
 
         self.optimizer.step()
 
-        return loss.tolist()
+        return loss.item()
 
     def train_vae(self):
 
@@ -345,7 +345,7 @@ class Model(nn.Module):
                         features_of_that_class = features[label == s, :]  # order of features and labels must coincide
                         # if number of selected features is smaller than the number of features we want per class:
                         multiplier = torch.ceil(torch.cuda.FloatTensor(
-                            [max(1, sample_per_class / features_of_that_class.size(0))])).long().tolist()
+                            [max(1, sample_per_class / features_of_that_class.size(0))])).long().item()
 
                         features_of_that_class = features_of_that_class.repeat(multiplier, 1)
 
@@ -427,15 +427,15 @@ class Model(nn.Module):
                 print('[%.1f]     novel=%.4f, seen=%.4f, h=%.4f , loss=%.4f' % (
                 k, cls.acc_novel, cls.acc_seen, cls.H, cls.average_loss))
 
-                history.append([torch.tensor(cls.acc_seen).tolist(), torch.tensor(cls.acc_novel).tolist(),
-                                torch.tensor(cls.H).tolist()])
+                history.append([cls.acc_seen.clone().tolist(), cls.acc_novel.clone().tolist(),
+                                cls.H.clone().tolist()])
 
             else:
                 print('[%.1f]  acc=%.4f ' % (k, cls.acc))
-                history.append([0, torch.tensor(cls.acc).tolist(), 0])
+                history.append([0, cls.acc.clone().tolist(), 0])
 
         if self.generalized:
-            return torch.tensor(cls.acc_seen).tolist(), torch.tensor(cls.acc_novel).tolist(), torch.tensor(
-                cls.H).tolist(), history
+            return cls.acc_seen.clone().tolist(), cls.acc_novel.clone().tolist(), \
+                cls.H.clone().tolist(), history
         else:
-            return 0, torch.tensor(cls.acc).tolist(), 0, history
+            return 0, cls.acc.clone().tolist(), 0, history
