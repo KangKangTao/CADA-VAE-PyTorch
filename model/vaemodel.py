@@ -388,10 +388,10 @@ class Model(nn.Module):
                 else:
                     return torch.cuda.FloatTensor([])
 
-            z_seen_img   = convert_datapoints_to_z(img_seen_feat, self.encoder['resnet_features'])
+            z_seen_img   = convert_datapoints_to_z(img_seen_feat,   self.encoder['resnet_features'])
             z_unseen_img = convert_datapoints_to_z(img_unseen_feat, self.encoder['resnet_features'])
 
-            z_seen_att = convert_datapoints_to_z(att_seen_feat, self.encoder[self.auxiliary_data_source])
+            z_seen_att   = convert_datapoints_to_z(att_seen_feat,   self.encoder[self.auxiliary_data_source])
             z_unseen_att = convert_datapoints_to_z(att_unseen_feat, self.encoder[self.auxiliary_data_source])
 
             train_Z = [z_seen_img, z_unseen_img ,z_seen_att    ,z_unseen_att]
